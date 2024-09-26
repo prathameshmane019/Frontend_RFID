@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
-
+const API_URL =  process.env.API_URL || 'http://localhost:3000';
 export default function ManageStudents() {
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);

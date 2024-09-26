@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://nfc-attendance.vercel.app',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '', // remove /api prefix when forwarding to backend
