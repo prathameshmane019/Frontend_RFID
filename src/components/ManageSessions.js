@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
 
 const dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ManageSessions = () => {
   const [sessions, setSessions] = useState([]);
@@ -23,7 +23,7 @@ const ManageSessions = () => {
   const fetchSessions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/sessions`,{
+      const response = await axios.get(`${API_URL}/api/sessions`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -47,7 +47,7 @@ const ManageSessions = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/sessions`, {
+      await axios.post(`${API_URL}/api/sessions`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -70,7 +70,7 @@ const ManageSessions = () => {
 
     setLoading(true);
     try {
-      await axios.put(`${API_URL}/sessions/${editingSession._id}`, {
+      await axios.put(`${API_URL}/api/sessions/${editingSession._id}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -88,7 +88,7 @@ const ManageSessions = () => {
   const handleDeleteSession = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/sessions/${id}`,{
+      await axios.delete(`${API_URL}/api/sessions/${id}`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

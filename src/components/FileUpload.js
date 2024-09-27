@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_URL = 'https://unitytech-backend.vercel.app';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function FileUpload() {
   const [file, setFile] = useState(null);

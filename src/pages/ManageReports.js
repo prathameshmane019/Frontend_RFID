@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL =  process.env.API_URL || 'http://localhost:3000';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const ManageReports = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -18,6 +20,9 @@ const ManageReports = () => {
     return localStorage.getItem('token') || '';
   };
 
+  
+  console.log(API_URL);
+
   useEffect(() => {
     fetchClasses();
   }, []);
@@ -26,7 +31,7 @@ const ManageReports = () => {
   const fetchClasses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/classes`, {
+      const response = await axios.get(`${API_URL}/api/classes`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -48,7 +53,7 @@ const fetchAttendanceReport = async () => {
 
   setLoading(true);
   try {
-    const response = await axios.get(`${API_URL}/attendance/report`, {
+    const response = await axios.get(`${API_URL}/api/attendance/report`, {
       params: { startDate, endDate, class: selectedClass },
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -72,7 +77,7 @@ const handleDownload = async () => {
 
   setLoading(true);
   try {
-    const response = await axios.get(`${API_URL}/attendance/report/download`, {
+    const response = await axios.get(`${API_URL}/api/attendance/report/download`, {
       params: { startDate, endDate, class: selectedClass },
       
         headers: {
@@ -100,7 +105,7 @@ const handleDownload = async () => {
 const sendAbsenceNotifications = async () => {
   setLoading(true);
   try {
-    await axios.get(`${API_URL}/attendance/absent`,{
+    await axios.get(`${API_URL}/api/attendance/absent`,{
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },

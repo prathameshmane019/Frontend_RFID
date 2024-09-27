@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL =  process.env.API_URL || 'http://localhost:3000';
+
 export default function ManageClasses() {
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  console.log(API_URL);
+  
   const [classes, setClasses] = useState([]);
   const [newClass, setNewClass] = useState({ name: '' });
   const [loading, setLoading] = useState(false);
@@ -19,7 +23,7 @@ export default function ManageClasses() {
   const fetchClasses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/classes`, {
+      const response = await axios.get(`${API_URL}/api/classes`, {
         headers: {
           Authorization: `Bearer ${getToken()}`
         },
@@ -36,7 +40,7 @@ export default function ManageClasses() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/classes`,{
+      await axios.post(`${API_URL}/api/classes`,{
         headers: {
           Authorization: `Bearer ${getToken()}`}
       , newClass});
@@ -53,7 +57,7 @@ export default function ManageClasses() {
   const handleDeleteClass = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/classes/${id}`,{
+      await axios.delete(`${API_URL}/api/classes/${id}`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

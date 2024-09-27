@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL =  process.env.API_URL || 'http://localhost:3000';
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function ManageStudents() {
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
@@ -26,7 +27,7 @@ export default function ManageStudents() {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get(`${API_URL}/classes`,{
+      const response = await axios.get(`${API_URL}/api/classes`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -40,7 +41,7 @@ export default function ManageStudents() {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/students`,{
+      const response = await axios.get(`${API_URL}/api/students`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -60,14 +61,14 @@ export default function ManageStudents() {
 
     try {
       if (editing) {
-        await axios.put(`${API_URL}/students/${newStudent._id}`, {
+        await axios.put(`${API_URL}/api/students/${newStudent._id}`, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
           },
           newStudent}
         );
       } else {
-        await axios.post(`${API_URL}/students`, newStudent);
+        await axios.post(`${API_URL}/api/students`, newStudent);
       }
 
       setNewStudent({ name: '', cardId: '', email: '', class: '' });
@@ -85,7 +86,7 @@ export default function ManageStudents() {
   const handleDeleteStudent = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/students/${id}`,{
+      await axios.delete(`${API_URL}/api/students/${id}`,{
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
