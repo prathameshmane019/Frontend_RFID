@@ -6,7 +6,7 @@ export default function ManageClasses() {
   const API_URL = process.env.REACT_APP_API_URL;
 
   console.log(API_URL);
-  
+
   const [classes, setClasses] = useState([]);
   const [newClass, setNewClass] = useState({ name: '' });
   const [loading, setLoading] = useState(false);
@@ -40,10 +40,14 @@ export default function ManageClasses() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/api/classes`,{
-        headers: {
-          Authorization: `Bearer ${getToken()}`}
-      , newClass});
+      await axios.post(`
+        ${API_URL}/api/classes`,
+        newClass,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          }
+        }
+      );
       setNewClass({ name: '' });
       fetchClasses();
       setError(null);
@@ -57,7 +61,7 @@ export default function ManageClasses() {
   const handleDeleteClass = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/api/classes/${id}`,{
+      await axios.delete(`${API_URL}/api/classes/${id}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -74,7 +78,7 @@ export default function ManageClasses() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Manage Classes</h1>
-      
+
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4">Add New Class</h2>
         <form onSubmit={handleAddClass} className="flex items-center space-x-4">
@@ -117,7 +121,7 @@ export default function ManageClasses() {
                 <tr key={cls._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">{cls.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button 
+                    <button
                       onClick={() => handleDeleteClass(cls._id)}
                       className="text-red-600 hover:text-red-900 focus:outline-none focus:underline transition-colors duration-200"
                     >

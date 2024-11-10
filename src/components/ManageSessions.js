@@ -38,20 +38,23 @@ const ManageSessions = () => {
       setLoading(false);
     }
   };
-
   const handleAddSession = async () => {
     if (!newSession.days.length || !newSession.startTime || !newSession.endTime) {
       setError('Please select days, start time, and end time');
       return;
     }
-
+  
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/api/sessions`, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      newSession});
+      await axios.post(
+        `${API_URL}/api/sessions`, 
+        newSession, 
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
       setNewSession({ days: [], startTime: '', endTime: '' });
       fetchSessions();
       setError(null);
@@ -61,20 +64,24 @@ const ManageSessions = () => {
       setLoading(false);
     }
   };
-
+  
   const handleUpdateSession = async () => {
     if (!editingSession.days.length || !editingSession.startTime || !editingSession.endTime) {
       setError('Please select days, start time, and end time');
       return;
     }
-
+  
     setLoading(true);
     try {
-      await axios.put(`${API_URL}/api/sessions/${editingSession._id}`, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      editingSession});
+      await axios.put(
+        `${API_URL}/api/sessions/${editingSession._id}`, 
+        editingSession, 
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
       setEditingSession(null);
       fetchSessions();
       setError(null);
@@ -84,7 +91,7 @@ const ManageSessions = () => {
       setLoading(false);
     }
   };
-
+  
   const handleDeleteSession = async (id) => {
     setLoading(true);
     try {

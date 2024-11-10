@@ -1,5 +1,3 @@
-
-// ManageStudents.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -13,13 +11,10 @@ export default function ManageStudents() {
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [formVisible, setFormVisible] = useState(false); // State to control form visibility
+  const [formVisible, setFormVisible] = useState(false);
 
-  
-  const getToken = () => {
-    // Replace with the appropriate method to get the token
-    return localStorage.getItem('token') || '';
-  };
+  const getToken = () => localStorage.getItem('token') || '';
+
   useEffect(() => {
     fetchClasses();
     fetchStudents();
@@ -27,10 +22,8 @@ export default function ManageStudents() {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/classes`,{
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
+      const response = await axios.get(`${API_URL}/api/classes`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
       });
       setClasses(response.data);
     } catch (err) {
@@ -41,10 +34,8 @@ export default function ManageStudents() {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/api/students`,{
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
+      const response = await axios.get(`${API_URL}/api/students`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
       });
       setStudents(response.data);
       setError(null);
@@ -58,17 +49,13 @@ export default function ManageStudents() {
   const handleAddOrUpdateStudent = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const config = { headers: { Authorization: `Bearer ${getToken()}` } };
 
     try {
       if (editing) {
-        await axios.put(`${API_URL}/api/students/${newStudent._id}`, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-          newStudent}
-        );
+        await axios.put(`${API_URL}/api/students/${newStudent._id}`, newStudent, config);
       } else {
-        await axios.post(`${API_URL}/api/students`, newStudent);
+        await axios.post(`${API_URL}/api/students`, newStudent, config);
       }
 
       setNewStudent({ name: '', cardId: '', email: '', class: '' });
@@ -79,17 +66,15 @@ export default function ManageStudents() {
       setError(editing ? 'Error updating student' : 'Error adding student');
     } finally {
       setLoading(false);
-      setFormVisible(false)
+      setFormVisible(false);
     }
   };
 
   const handleDeleteStudent = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${API_URL}/api/students/${id}`,{
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
+      await axios.delete(`${API_URL}/api/students/${id}`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
       });
       fetchStudents();
       setError(null);
@@ -103,20 +88,19 @@ export default function ManageStudents() {
   const toggleFormVisibility = () => {
     setFormVisible(!formVisible);
     if (formVisible) {
-      // Reset the form when hiding it
       setEditing(false);
       setNewStudent({ name: '', cardId: '', email: '', class: '' });
     }
   };
 
   const handleEditStudent = (student) => {
-    setFormVisible(true)
+    setFormVisible(true);
     setNewStudent(student);
     setEditing(true);
   };
 
   const filteredStudents = selectedClass
-    ? students.filter(student => student.class && student.class._id === selectedClass)
+    ? students.filter((student) => student.class && student.class._id === selectedClass)
     : students;
 
   return (
