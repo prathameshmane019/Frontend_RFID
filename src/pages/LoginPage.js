@@ -12,6 +12,7 @@ const LoginPage = () => {
   if (user) {
     navigate('/dashboard');
   } 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
