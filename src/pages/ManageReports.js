@@ -101,20 +101,20 @@ const ManageReports = () => {
     setError('');
   
     try {
-      const response = await axios.post(`${API_URL}/api/attendance/absent`,{ startDate, endDate, classId: selectedClass }
+      const response = await axios.post(`${API_URL}/api/attendance/absent`, 
+        { startDate, endDate, classId: selectedClass },
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
       );
   
-      if (!response.ok) {
-        const errorData = await response?.error;
-        throw new Error(errorData?.message || 'Failed to send notifications');
-      }
-  
-      const data = await response.data;
-      setAbsenteeReport(data.absenteeReport);
+      setAbsenteeReport(response.data.absenteeReport);
+      setError(''); // Clear any previous errors
     } catch (err) {
       console.error(err);
-      
-      setError('Error sending notifications: ' + err?.message);
+      setError('Error sending notifications: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
