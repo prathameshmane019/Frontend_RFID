@@ -5,7 +5,7 @@ A smart **RFID-Based Attendance System** built using **Node.js (Backend)**, **Re
 ---
 
 ## 🏗️ System Architecture
-![Flow Diagram](./public/Flow.png)
+![Flow Diagram](./public/Flow.jpg)
 
 
 ### **Components:**
