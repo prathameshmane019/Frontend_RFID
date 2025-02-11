@@ -1,70 +1,158 @@
-# Getting Started with Create React App
+# 📌 RFID-Based Attendance System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A smart **RFID-Based Attendance System** built using **Node.js (Backend)**, **React.js (Frontend)**, **MongoDB (Database)**, **Tailwind CSS (UI Styling)**, **RFID Reader**, and **ESP32 Module**. This system automates attendance marking using RFID cards, enhancing security and efficiency.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🏗️ System Architecture
+![Flow Diagram](./public/Flow.png)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### **Components:**
+- **RFID Card Reader**: Scans RFID tags and sends data to the ESP32.
+- **ESP32 (NodeMCU)**: Processes RFID data and communicates with the server via HTTP.
+- **Backend (Node.js + Express.js)**: Handles API requests, processes attendance, and communicates with the database.
+- **Frontend (React.js + Tailwind CSS)**: Provides an intuitive interface for admins to manage attendance records.
+- **MongoDB**: Stores student details, RFID data, and attendance logs.
+- **Email/SMS Gateway**: Sends real-time notifications to students and admins.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 📌 Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+✅ **Automated Attendance Marking** via RFID scanning
+✅ **Admin Panel** to manage students and view attendance
+✅ **Real-time Notifications** via Email/SMS
+✅ **Secure Data Storage** using MongoDB
+✅ **REST API Integration** for efficient communication
+✅ **Modern UI** using React.js & Tailwind CSS
+✅ **Error Logging & Alerts**
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| 🛠️ Tech Stack  | 🚀 Description |
+|-------------|------------|
+| **Node.js** | Backend API |
+| **Express.js** | REST API Framework |
+| **React.js** | Frontend UI |
+| **MongoDB** | NoSQL Database |
+| **Tailwind CSS** | Styling Framework |
+| **ESP32 (NodeMCU)** | Microcontroller for RFID |
+| **RFID Reader** | Scans RFID cards |
+| **Email/SMS Gateway** | Sends alerts |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🏗️ Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Node.js & npm installed
+- MongoDB (local or cloud)
+- ESP32 firmware setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔥 Setup & Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### **Backend (Node.js)**
 
-## Learn More
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/rfid-attendance-system.git
+   ```
+2. Navigate to the backend folder:
+   ```bash
+   cd backend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the server:
+   ```bash
+   npm start
+   ```
+5. Backend runs on `http://localhost:5000`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### **Frontend (React.js)**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Navigate to the frontend folder:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run React application:
+   ```bash
+   npm start
+   ```
+4. Open `http://localhost:3000` in the browser
 
-### Code Splitting
+#### **ESP32 Firmware (Microcontroller Setup)**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Flash the ESP32 firmware with the following Arduino code:
+   ```cpp
+   #include <WiFi.h>
+   #include <HTTPClient.h>
+   
+   const char* ssid = "Your_WiFi_SSID";
+   const char* password = "Your_WiFi_Password";
+   const char* serverUrl = "http://localhost:5000/api/attendance";
 
-### Analyzing the Bundle Size
+   void setup() {
+       Serial.begin(115200);
+       WiFi.begin(ssid, password);
+       while (WiFi.status() != WL_CONNECTED) {
+           delay(1000);
+           Serial.println("Connecting...");
+       }
+   }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   void loop() {
+       if (WiFi.status() == WL_CONNECTED) {
+           HTTPClient http;
+           http.begin(serverUrl);
+           int httpResponseCode = http.GET();
+           http.end();
+       }
+       delay(5000);
+   }
+   ```
+2. Upload the script to your ESP32 using Arduino IDE.
+3. Connect the RFID reader to ESP32 as per the wiring diagram.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📡 API Endpoints
 
-### Advanced Configuration
+| Method  | Endpoint               | Description          |
+|---------|------------------------|----------------------|
+| `GET`   | `/students`            | Get all students    |
+| `POST`  | `/students`            | Add a new student   |
+| `GET`   | `/attendance`          | Get attendance logs |
+| `POST`  | `/attendance`          | Mark attendance     |
+| `GET`   | `/attendance/:id`      | Get attendance by ID |
+| `DELETE`| `/students/:id`        | Remove a student    |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
+ 
 
-### Deployment
+## 🙌 Acknowledgements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Thanks to **Node.js**, **React.js**, **ESP32**, and **MongoDB** communities for their amazing support and documentation!
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📩 Contact
+
+👤 **Prathamesh**  
+📧 Email: maneprathamesh019@gmail.com  
+🔗 [GitHub](https://github.com/prathameshmane019)  
+🔗 [LinkedIn](www.linkedin.com/in/prathamesh-mane-2308a5241)  
+
+---
+ 
+
